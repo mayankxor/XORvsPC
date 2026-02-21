@@ -2361,6 +2361,62 @@ proc ::board::mark::GetBox {pathName square portion {short 0}} {
 
 ### End of namespace ::board::mark
 
+# ::board::showLegalMoveDots
+#   Shows small dots on all squares that the piece on the given square can legally move to.
+#   Uses the existing DrawDisk mark function to draw dots like lichess/chess.com.
+# Arguments:
+#   w       - board widget path (e.g., .main.board)
+#   sq      - source square number (0-63)
+#   color   - color for the dots (defaults to a semi-transparent gray)
+ 
+proc ::board::showLegalMoveDots {w sq {color ""}} {
+  # Clear any existing legal move dots first
+  ::board::clearLegalMoveDots $w
+ 
+  # Get all legal moves in UCI format (e2e4, g1f3, etc.)
+  set legalMoves [sc_pos movesUci]
+ 
+  # Convert source square to UCI format for comparison
+  set fromSquare [::board::san $sq]
+ 
+  # Default dot color if not specified
+  if {$color == ""} {
+    set color "#666666"
+  }
+ 
+  # Find all destination squares for moves from this square
+  set destSquares {}
+  foreach move $legalMoves {
+    # UCI format: e2e4 (from square = first 2 chars, to square = last 2 chars)
+    if {[string length $move] >= 4} {
+      set moveFrom [string range $move 0 1]
+      set moveTo [string range $move 2 3]
+      if {$moveFrom == $fromSquare} {
+        set destSq [::board::sq $moveTo]
+        if {$destSq >= 0 && $destSq <= 63} {
+          lappend destSquares $destSq
+        }
+      }
+    }
+  }
+ 
+  # Draw dots on each destination square
+  foreach destSq $destSquares {
+    # Use a smaller disk for the dot effect (0.25 size for a small centered dot)
+    set box [::board::mark::GetBox $w.bd $destSq 0.25 1]
+    $w.bd create oval $box -fill $color -outline $color -tag [list legalMoveDot mark dot$destSq]
+  }
+}
+ 
+# ::board::clearLegalMoveDots
+#   Clears all legal move dots from the board.
+# Arguments:
+#   w       - board widget path (e.g., .main.board)
+ 
+proc ::board::clearLegalMoveDots {w} {
+  $w.bd delete legalMoveDot
+}
+ 
 # ::board::piece {w sq}
 #   Given a board and square number, returns the piece type
 #   (e for empty, wp for White Pawn, etc) of the square.

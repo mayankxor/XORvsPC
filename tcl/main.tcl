@@ -1534,15 +1534,18 @@ proc pressSquare {square confirm} {
   if {$selectedSq == -1} {
     set selectedSq $square
     ::board::highlightSquare .main.board $square $highcolor
-    # Drag this piece if it is the same color as the side to move:
+    # Show legal move dots for the same selected piece
     set c [string index [sc_pos side] 0]  ;# will be "w" or "b"
     set p [string index [::board::piece .main.board $square] 0] ;# "w", "b" or "e"
     if {$c == $p} {
+      ::board::showLegalMoveDots .main.board $square
       ::board::setDragSquare .main.board $square
     }
   } else {
     ::board::setDragSquare .main.board -1
     ::board::highlightSquare .main.board $selectedSq
+    # Clear legal move dots
+    ::board::clearLegalMoveDots .main.board
     # ::board::highlightSquare .main.board $square
     if {$square != $selectedSq} {
       addMove $square $selectedSq -animate
@@ -1567,6 +1570,7 @@ proc releaseSquare {w x y} {
   set square [::board::getSquare $w $x $y]
   if {$square < 0} {
     set selectedSq -1
+    ::board::clearLegalMoveDots $w
     return
   }
 
@@ -1593,6 +1597,8 @@ proc releaseSquare {w x y} {
     set selectedSq -1
     # ::board::highlightSquare $w $square
   }
+    # Clear legal move dots after move is completed or cancelled
+    ::board::clearLegalMoveDots $w
   set ::addVariationWithoutAsking 0
 }
 
