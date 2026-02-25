@@ -1569,8 +1569,8 @@ proc releaseSquare {w x y} {
   ::board::setDragSquare $w -1
   set square [::board::getSquare $w $x $y]
   if {$square < 0} {
-    set selectedSq -1
     ::board::clearLegalMoveDots $w
+    set selectedSq -1
     return
   }
 
@@ -1581,11 +1581,12 @@ proc releaseSquare {w x y} {
       set selectedSq -1
       ::board::highlightSquare $w $bestSq
       ::board::highlightSquare $w $square
+      ::board::clearLegalMoveDots $w
       addMove $square $bestSq -animate
       enterSquare $square
     } else {
       # Current square is the square user pressed the button on,
-      # so we do nothing.
+      # so we do nothing - keep the piece selected with dot showing
     }
   } else {
     if {$selectedSq == -1} {
@@ -1596,9 +1597,9 @@ proc releaseSquare {w x y} {
     ::board::highlightSquare $w $selectedSq
     set selectedSq -1
     # ::board::highlightSquare $w $square
-  }
     # Clear legal move dots after move is completed or cancelled
     ::board::clearLegalMoveDots $w
+  }
   set ::addVariationWithoutAsking 0
 }
 
