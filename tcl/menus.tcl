@@ -969,7 +969,7 @@ $m add command -label OptionsSave -command {
     ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks 
     ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat ::pgn::showScrollbar
     myPlayerNames optionsAutoSave ::tree::mask::recentMask ::tree::mask::autoLoadMask ::tree::showBar ::tree::short ::tree::sortBest ::tree::autoAdjust ::tree::mask::showMarkers ::tree::mask::tooltips
-    ::tree::autoSave ::tree::order ::tree::showFrame ecoFile suggestMoves showVarPopup showVarArrows colorActiveSquare
+    ::tree::autoSave ::tree::order ::tree::showFrame ecoFile suggestMoves showVarPopup showVarArrows showLegalMoveDots colorActiveSquare
     annotate(blunder) annotate(addTag) annotate(Moves) annotate(WithVars) annotate(WithScore) useAnalysisBook annotate(isVar) annotate(scoreType) annotate(cutoff) annotate(MissedMates) annotate(VarAtEnd)
     annotate(WantedDepth) annotate(Depth) autoplayDelay animateDelay boardCoords boardSTM 
     moveEntry(AutoExpand) moveEntry(Coord)
@@ -1162,6 +1162,10 @@ set helpMessage($m.entry,0) OptionsMovesAsk
 $m.entry add checkbutton -label OptionsMovesShowVarArrows \
     -variable showVarArrows -offvalue 0 -onvalue 1
 set helpMessage($m.entry,10) OptionsMovesShowVarArrows
+
+$m.entry add checkbutton -label "Highlight legal moves" \
+    -variable showLegalMoveDots -offvalue 0 -onvalue 1
+set helpMessage($m.entry,11) OptionsMovesHighlightLegal
 
 $m.entry add checkbutton -label OptionsShowVarPopup \
     -variable showVarPopup -offvalue 0 -onvalue 1

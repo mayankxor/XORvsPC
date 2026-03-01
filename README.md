@@ -12,6 +12,6 @@ They will not run on Windows, macOS, or non-x86_64 architectures. For other syst
 # CHECKLIST
 A list of features I want to add to this fork:
 
- - [ ] Option to highlight legal squares upon selecting(or holding) a piece
+ - [x] Option to highlight legal squares upon selecting(or holding) a piece
  - [ ] More icons in comment editor window
  - [ ] A way to get game review(book, best, great, etc moves) on analysis

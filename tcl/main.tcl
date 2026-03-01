@@ -1538,7 +1538,9 @@ proc pressSquare {square confirm} {
     set c [string index [sc_pos side] 0]  ;# will be "w" or "b"
     set p [string index [::board::piece .main.board $square] 0] ;# "w", "b" or "e"
     if {$c == $p} {
-      ::board::showLegalMoveDots .main.board $square
+        if {$::showLegalMoveDots} {
+          ::board::showLegalMoveDots .main.board $square
+        }
       ::board::setDragSquare .main.board $square
     }
   } else {
